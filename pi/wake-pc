@@ -1,0 +1,4 @@
+#!/bin/sh
+# Wake the PC: magic packet to the MAC of its WIRED network card. No root needed (UDP broadcast).
+echo "wake-pc at $(date +%s) $(date +%T)"
+python3 /usr/local/lib/wake-on-demand/wol.py @PC_MAC@ @BROADCAST@

@@ -1,0 +1,14 @@
+# /etc/systemd/system/wake-proxy.service - installed by pi/install.sh
+[Unit]
+Description=Wake proxy: forward to the PC, wake it with Wake-on-LAN if it is asleep
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=@PI_USER@
+ExecStart=/usr/bin/python3 /usr/local/lib/wake-on-demand/tcpfwd.py wake --listen 127.0.0.1 --map 18080:@PC_IP@:18080 --map 18082:@PC_IP@:18082
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

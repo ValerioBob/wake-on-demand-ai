@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.log
+# never commit tunnel credentials or real configs
+*.json
+cloudflared-config.yml
+config.yml

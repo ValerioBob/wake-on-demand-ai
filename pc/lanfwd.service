@@ -1,0 +1,13 @@
+# systemd USER unit (~/.config/systemd/user/lanfwd.service) - installed by pc/install.sh
+# Exposes the local-only AI services to the Pi (and only to the Pi) + records activity for idle-watch.
+[Unit]
+Description=LAN forwarder (Pi only) to Open WebUI / LLM API + activity log
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 %h/.local/lib/wake-on-demand/tcpfwd.py lan --listen @PC_IP@ --allow @PI_IP@ --map 18080:127.0.0.1:@WEBUI_PORT@ --map 18082:127.0.0.1:@API_PORT@
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

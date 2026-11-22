@@ -1,0 +1,33 @@
+# /etc/cloudflared/config.yml on the Pi.
+# Replace the tunnel id, the hostnames (homelab.example is a placeholder) and the Access team/AUD tags.
+tunnel: 00000000-0000-0000-0000-000000000000
+credentials-file: /etc/cloudflared/00000000-0000-0000-0000-000000000000.json
+no-autoupdate: true
+
+ingress:
+  # Web UI (Open WebUI) - protected by Cloudflare Access + the UI's own login
+  - hostname: chat.homelab.example
+    service: http://127.0.0.1:18080          # local wake proxy -> PC
+    originRequest:
+      access:                                 # cloudflared itself rejects requests without a valid Access JWT
+        required: true
+        teamName: your-team
+        audTag:
+          - <AUD tag of the "chat" Access application>
+
+  # OpenAI-compatible LLM API - only the inference endpoints are published
+  - hostname: llm.homelab.example
+    path: ^/v1/(chat/completions|messages|messages/count_tokens|responses|models)$
+    service: http://127.0.0.1:18082
+    originRequest:
+      httpHostHeader: 127.0.0.1:8082
+      connectTimeout: 30s
+      access:
+        required: true
+        teamName: your-team
+        audTag:
+          - <AUD tag of the "llm" Access application>
+  - hostname: llm.homelab.example
+    service: http_status:404
+
+  - service: http_status:404

@@ -1,0 +1,5 @@
+# EXPERIMENT 3, PC side: /etc/udev/rules.d/91-pi-usb-wake.rules
+# Lets the Pi's composite gadget (1d6b:0104) and the USB2 root hub wake the PC.
+# Note: enabling the root hub also lets keyboards/mice on it wake the PC (check BIOS "USB Mouse Power On").
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1d6b", ATTR{idProduct}=="0104", ATTR{power/wakeup}="enabled"
+ACTION=="add", SUBSYSTEM=="usb", KERNEL=="usb1", ATTR{power/wakeup}="enabled"

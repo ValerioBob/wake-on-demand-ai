@@ -1,0 +1,14 @@
+# /etc/systemd/system/idle-watch.service - installed by pc/install.sh
+[Unit]
+Description=Suspend after N minutes of inactivity (wake-up via Wake-on-LAN from the Pi)
+After=network-online.target
+
+[Service]
+Environment=IDLE_MINUTES=@IDLE_MINUTES@
+Environment=PI_ADDR=@PI_IP@
+ExecStart=/usr/bin/python3 /usr/local/sbin/idle-watch
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

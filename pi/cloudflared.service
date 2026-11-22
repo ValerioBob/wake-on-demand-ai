@@ -1,0 +1,13 @@
+# /etc/systemd/system/cloudflared.service - installed by pi/install.sh
+[Unit]
+Description=Cloudflare Tunnel (public hostnames -> wake proxy)
+After=network-online.target wake-proxy.service
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/cloudflared --no-autoupdate --config /etc/cloudflared/config.yml tunnel run
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
